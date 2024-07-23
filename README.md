@@ -3,16 +3,28 @@
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+##  Development Environment Setup
+1- Install Java Development Kit (JDK): Ensure you have JDK 11 or later installed. \
+2- Install maven \
+3- Install Docker  \
+4- Install PostgreSQL 
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
+You can run your application in dev mode that enables live coding using the command below:
 
 ```shell script
 ./mvnw compile quarkus:dev
 ```
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+
+## Testing the application
+To test the application, run the following command:
+
+```shell script
+./mvnw test
+```
 
 ## Packaging and running the application
 
