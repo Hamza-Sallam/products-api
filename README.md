@@ -9,7 +9,25 @@ If you want to learn more about Quarkus, please visit its website: <https://quar
 3- Install Docker  \
 4- Install PostgreSQL 
 
-## Running the application in dev mode
+
+## Running the application in a docker container
+to run the application in a docker container, run the following command in the project root dir
+
+```shell script
+docker-compose up
+```
+This is crucial to make a successful connection with the database in a container
+
+## Running the application:
+to run the application using the Java jar file , navigate to target/quarkusapp
+```shell script
+cd .\target\quarkus-app\ 
+```
+then run the java jar file
+```shell script
+cd java -jar .\quarkus-run.jar   
+```
+## Running the application in dev mode (locally)
 
 You can run your application in dev mode that enables live coding using the command below:
 
