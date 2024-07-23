@@ -18,15 +18,7 @@ docker-compose up
 ```
 This is crucial to make a successful connection with the database in a container
 
-## Running the application:
-to run the application using the Java jar file , navigate to target/quarkusapp
-```shell script
-cd .\target\quarkus-app\ 
-```
-then run the java jar file
-```shell script
-cd java -jar .\quarkus-run.jar   
-```
+
 ## Running the application in dev mode (locally)
 
 You can run your application in dev mode that enables live coding using the command below:
