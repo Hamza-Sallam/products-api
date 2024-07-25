@@ -18,6 +18,8 @@ docker-compose up
 ```
 This is crucial to make a successful connection with the database in a container
 
+## Build the Docker Image using the Docker File 
+To build the image choose any of the 3 Dockerfiles that suits you from the path ***src/main/docker*** and follow the instructions 
 
 ## Running the application in dev mode (locally)
 
