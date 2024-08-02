@@ -1,13 +1,16 @@
-package com.company.products;
+package com.company.products.web;
 
 
+import com.company.products.adapters.SQLProductEntity;
+import com.company.products.adapters.SQLProductRepository;
+import com.company.products.core.entity.Product;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.inject.*;
 import jakarta.ws.rs.core.*;
-import java.util.List;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 public class ProductResource{
 
     @Inject
-    ProductRepository repository;
+    SQLProductRepository repository;
     @Inject
     Validator validator;
 
@@ -28,8 +31,8 @@ public class ProductResource{
         if (page < 0 || size < 1) {
              return Response.status(Response.Status.BAD_REQUEST).entity("Error: Page number and size must be greater than 0").build();
         }
-        List<Product> products = repository.findAll().page(page, size).list();
-        return Response.ok(products).build();
+
+        return Response.ok(repository.findAll(page,size)).build();
     }
 
     @GET
@@ -46,10 +49,10 @@ public class ProductResource{
         try{
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
             if(validate.isEmpty()){
-            repository.persist(product);
-            return Response.status(Response.Status.CREATED).entity(product).build();
+            Product new_product=repository.create(product);
+            return Response.status(Response.Status.CREATED).entity(new_product).build();
         }
-            String violations = validate.stream().map(violation -> violation.getMessage()).collect(Collectors.joining(", "));
+            String violations = validate.stream().map(violation -> violation.getMessage()).collect(Collectors.joining("\n "));
             return Response.status(Response.Status.BAD_REQUEST).entity(violations).build();
         }
         catch (Exception e) {
@@ -61,7 +64,7 @@ public class ProductResource{
     @Path("/{id}")
     @Transactional
     public Response updateProduct(@PathParam("id") Long id, Product product) {
-        Product existedproduct = repository.findById(id);
+        SQLProductEntity existedproduct = (SQLProductEntity) repository.findById(id);
         if (existedproduct == null) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesnt exist").build();}
         try {
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
@@ -70,10 +73,9 @@ public class ProductResource{
                 existedproduct.setDescription(product.getDescription());
                 existedproduct.setPrice(product.getPrice());
                 existedproduct.setImage(product.getImage());
-                repository.persist(existedproduct);
                 return Response.ok(existedproduct).entity("Product Updated Successfully").build();
             }
-            String violations = validate.stream().map(violation -> violation.getMessage()).collect(Collectors.joining(", "));
+            String violations = validate.stream().map(violation -> violation.getMessage()).collect(Collectors.joining("\n "));
             return Response.status(Response.Status.BAD_REQUEST).entity(violations).build();
 
         }

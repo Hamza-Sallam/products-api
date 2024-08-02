@@ -9,7 +9,7 @@ services:
       - "5432:5432"
 
   quarkus-app:
-    image: 7amza23/products-api
+    image: 7amza23/clean_products-api
     depends_on:
       - postgres
     environment:

@@ -1,8 +1,8 @@
-package com.company.products;
+package com.company.products.adapters;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class ProductRepository implements PanacheRepository<Product> {
+public class ProductPanacheRepository implements PanacheRepository<SQLProductEntity> {
 }
