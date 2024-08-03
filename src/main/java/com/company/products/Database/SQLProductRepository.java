@@ -1,7 +1,7 @@
-package com.company.products.adapters;
+package com.company.products.Database;
 
 
-import com.company.products.core.usecase.ProductRepository;
+import com.company.products.adapters.ProductPanacheRepository;
 import com.company.products.core.entity.Product;
 import jakarta.transaction.Transactional;
 import jakarta.inject.*;
@@ -14,7 +14,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 
 @ApplicationScoped
-public class SQLProductRepository implements ProductRepository {
+public class SQLProductRepository implements Product.ProductRepository {
     @Inject
     ProductPanacheRepository productPanacheRepository;
 

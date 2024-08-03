@@ -1,4 +1,4 @@
-package com.company.products.adapters;
+package com.company.products.Database;
 
 import com.company.products.core.entity.Product;
 import jakarta.persistence.*;

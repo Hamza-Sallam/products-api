@@ -1,15 +1,16 @@
 package com.company.products.web;
 
 
-import com.company.products.adapters.SQLProductEntity;
-import com.company.products.adapters.SQLProductRepository;
+import com.company.products.Database.SQLProductEntity;
+import com.company.products.adapters.ProductService;
 import com.company.products.core.entity.Product;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
-import jakarta.inject.*;
-import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class ProductResource{
 
     @Inject
-    SQLProductRepository repository;
+    ProductService productService;
     @Inject
     Validator validator;
 
@@ -32,13 +33,13 @@ public class ProductResource{
              return Response.status(Response.Status.BAD_REQUEST).entity("Error: Page number and size must be greater than 0").build();
         }
 
-        return Response.ok(repository.findAll(page,size)).build();
+        return Response.ok(productService.getProducts(page,size)).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getProduct(@PathParam("id") Long id) {
-        Product product =repository.findById(id);
+        Product product =productService.findById(id);
         if (product == null) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesnt exist").build();}
         return Response.ok(product).build();
     }
@@ -49,10 +50,10 @@ public class ProductResource{
         try{
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
             if(validate.isEmpty()){
-            Product new_product=repository.create(product);
+            Product new_product=productService.createProduct(product);
             return Response.status(Response.Status.CREATED).entity(new_product).build();
         }
-            String violations = validate.stream().map(violation -> violation.getMessage()).collect(Collectors.joining("\n "));
+            String violations = validate.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("\n "));
             return Response.status(Response.Status.BAD_REQUEST).entity(violations).build();
         }
         catch (Exception e) {
@@ -64,7 +65,7 @@ public class ProductResource{
     @Path("/{id}")
     @Transactional
     public Response updateProduct(@PathParam("id") Long id, Product product) {
-        SQLProductEntity existedproduct = (SQLProductEntity) repository.findById(id);
+        SQLProductEntity existedproduct = (SQLProductEntity) productService.findById(id);
         if (existedproduct == null) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesnt exist").build();}
         try {
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
@@ -73,9 +74,9 @@ public class ProductResource{
                 existedproduct.setDescription(product.getDescription());
                 existedproduct.setPrice(product.getPrice());
                 existedproduct.setImage(product.getImage());
-                return Response.ok(existedproduct).entity("Product Updated Successfully").build();
+                return Response.ok(existedproduct).entity("Product "+id+" Updated Successfully").build();
             }
-            String violations = validate.stream().map(violation -> violation.getMessage()).collect(Collectors.joining("\n "));
+            String violations = validate.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("\n "));
             return Response.status(Response.Status.BAD_REQUEST).entity(violations).build();
 
         }
@@ -88,8 +89,8 @@ public class ProductResource{
     @Path("/{id}")
     @Transactional
     public Response deleteProduct(@PathParam("id") Long id) {
-        Product product = repository.findById(id);
-        boolean deleted = repository.deleteById(id);
+        Product product = productService.findById(id);
+        boolean deleted = productService.deleteProduct(id);
         if (!deleted) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesnt exist").build();}
 
         try {
