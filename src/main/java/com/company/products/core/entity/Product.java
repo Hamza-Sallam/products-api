@@ -1,8 +1,6 @@
 package com.company.products.core.entity;
 
 
-import java.util.List;
-
 public class Product {
      Long id;
      String name;
@@ -26,10 +24,10 @@ public class Product {
     public String getImage() {return image;}
     public void setImage(String image) {this.image = image;}
 
-    public  interface ProductRepository {
-        List<? extends Product> findAll(int page, int size);
-        Product findById(Long id);
-        Product create(Product product);
-        boolean deleteById(Long id);
-    }
+//    public  interface ProductRepository {
+//        List<? extends Product> findAll(int page, int size);
+//        Product findById(Long id);
+//        Product create(Product product);
+//        boolean deleteById(Long id);
+//    }
 }

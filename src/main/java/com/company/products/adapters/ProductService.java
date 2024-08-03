@@ -13,16 +13,16 @@ public class ProductService implements productUseCase{
     SQLProductRepository productRepository;
 
     public Product createProduct(Product product){
-    return productRepository.create(product);
+    return productRepository.createProduct(product);
     }
     public List<? extends Product> getProducts(int page,int size){
-        return productRepository.findAll(page,size);
+        return productRepository.getProducts(page,size);
     }
     public Product findById(Long id){
         return productRepository.findById(id);
     }
     public boolean deleteProduct(Long id){
-        return productRepository.deleteById(id);
+        return productRepository.deleteProduct(id);
     }
 
 }
