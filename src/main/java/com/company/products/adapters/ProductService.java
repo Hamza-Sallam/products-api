@@ -1,28 +1,28 @@
 package com.company.products.adapters;
-import com.company.products.Database.SQLProductRepository;
+
 import com.company.products.core.entity.Product;
-import com.company.products.core.usecase.productUseCase;
+import com.company.products.core.usecase.ProductUseCase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
 
 @ApplicationScoped
-public class ProductService implements productUseCase{
+public class ProductService {
     @Inject
-    SQLProductRepository productRepository;
+    ProductUseCase productUseCase;
 
     public Product createProduct(Product product){
-    return productRepository.createProduct(product);
+    return productUseCase.createProduct(product);
     }
     public List<? extends Product> getProducts(int page,int size){
-        return productRepository.getProducts(page,size);
+        return productUseCase.getProducts(page,size);
     }
     public Product findById(Long id){
-        return productRepository.findById(id);
+        return productUseCase.findProductById(id);
     }
     public boolean deleteProduct(Long id){
-        return productRepository.deleteProduct(id);
+        return productUseCase.deleteProduct(id);
     }
 
 }

@@ -1,8 +1,14 @@
 package com.company.products.Database;
 
 import com.company.products.core.entity.Product;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class SQLProductEntity extends Product{
@@ -33,4 +39,6 @@ public class SQLProductEntity extends Product{
         this.image = image;
 
     }
+
+
 }

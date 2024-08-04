@@ -1,11 +1,10 @@
 package com.company.products.Database;
 
 
-import com.company.products.adapters.ProductPanacheRepository;
 import com.company.products.core.entity.Product;
-import com.company.products.core.usecase.productUseCase;
+import com.company.products.core.usecase.ProductUseCase;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -14,19 +13,18 @@ import java.util.List;
 
 
 @ApplicationScoped
-public class SQLProductRepository implements productUseCase {
-    @Inject
-    ProductPanacheRepository productPanacheRepository;
+public class SQLProductRepository implements ProductUseCase,PanacheRepository<SQLProductEntity> {
 
 
     @Override
     public List<? extends  Product> getProducts(int page , int size){
-        return productPanacheRepository.findAll().page(page, size).list();
+        return findAll().page(page, size).list();
 
     }
+
     @Override
-    public Product findById(Long id){
-        return productPanacheRepository.findById(id);
+    public Product findProductById(Long id){
+        return findById(id);
     }
 
 
@@ -35,14 +33,15 @@ public class SQLProductRepository implements productUseCase {
     @Transactional
     public Product createProduct(Product product){
         Product new_product = SQLProductEntity.fromDto(product);
-        productPanacheRepository.persist((SQLProductEntity) new_product);
+        persist((SQLProductEntity) new_product);
         return new_product;
 
     }
     @Override
     public boolean deleteProduct(Long id){
-        return productPanacheRepository.deleteById(id);
+        return deleteById(id);
 
     }
 
 }
+
