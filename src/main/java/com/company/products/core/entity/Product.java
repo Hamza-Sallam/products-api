@@ -24,10 +24,5 @@ public class Product {
     public String getImage() {return image;}
     public void setImage(String image) {this.image = image;}
 
-//    public  interface ProductRepository {
-//        List<? extends Product> findAll(int page, int size);
-//        Product findById(Long id);
-//        Product create(Product product);
-//        boolean deleteById(Long id);
-//    }
+
 }

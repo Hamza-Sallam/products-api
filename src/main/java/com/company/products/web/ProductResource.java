@@ -52,11 +52,14 @@ public class ProductResource{
             if(validate.isEmpty()){
             Product new_product=productService.createProduct(product);
             return Response.status(Response.Status.CREATED).entity(new_product).build();
+
+
         }
             String violations = validate.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("\n "));
             return Response.status(Response.Status.BAD_REQUEST).entity(violations).build();
         }
         catch (Exception e) {
+
             return Response.status(Response.Status.BAD_REQUEST).entity("Error creating a product: \n"+e.getMessage()).build();
         }
     }
@@ -74,7 +77,7 @@ public class ProductResource{
                 existedproduct.setDescription(product.getDescription());
                 existedproduct.setPrice(product.getPrice());
                 existedproduct.setImage(product.getImage());
-                return Response.ok(existedproduct).entity("Product "+id+" Updated Successfully").build();
+                return Response.ok(existedproduct).build();
             }
             String violations = validate.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("\n "));
             return Response.status(Response.Status.BAD_REQUEST).entity(violations).build();
@@ -94,7 +97,7 @@ public class ProductResource{
         if (!deleted) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesnt exist").build();}
 
         try {
-            return Response.ok().entity("'"+product.getName() + "' Product with id " + id + "  Deleted Successfully").build();
+            return Response.ok("'"+product.getName() + "' Product with id " + id + "  Deleted Successfully").build();
         }
         catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error Deleting the  product: \n"+e.getMessage()).build();
