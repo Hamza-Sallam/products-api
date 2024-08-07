@@ -27,7 +27,7 @@ public class SQLProductEntity extends Product{
 
     public SQLProductEntity() {}
 
-    public static Product fromDto(Product product){
+    public static Product toEntity(Product product){
         return new SQLProductEntity(product.getId(),product.getName(),product.getDescription(),product.getPrice(),product.getImage());
     }
 

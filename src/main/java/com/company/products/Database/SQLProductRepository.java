@@ -33,7 +33,7 @@ public class SQLProductRepository implements ProductUseCase,PanacheRepository<SQ
     @Override
     @Transactional
     public Product createProduct(Product product){
-        Product new_product = SQLProductEntity.fromDto(product);
+        Product new_product = SQLProductEntity.toEntity(product);
         persist((SQLProductEntity) new_product);
         return new_product;
 
