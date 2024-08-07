@@ -4,6 +4,7 @@ package com.company.products.Database;
 import com.company.products.core.entity.Product;
 import com.company.products.core.usecase.ProductUseCase;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -18,7 +19,7 @@ public class SQLProductRepository implements ProductUseCase,PanacheRepository<SQ
 
     @Override
     public List<? extends  Product> getProducts(int page , int size){
-        return findAll().page(page, size).list();
+        return findAll().page(Page.of(page,size)).list();
 
     }
 

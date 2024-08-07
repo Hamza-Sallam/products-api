@@ -1,7 +1,6 @@
 package com.company.products.web;
 
 
-import com.company.products.Database.SQLProductEntity;
 import com.company.products.adapters.ProductService;
 import com.company.products.core.entity.Product;
 import jakarta.inject.Inject;
@@ -68,7 +67,7 @@ public class ProductResource{
     @Path("/{id}")
     @Transactional
     public Response updateProduct(@PathParam("id") Long id, Product product) {
-        SQLProductEntity existedproduct = (SQLProductEntity) productService.findById(id);
+        Product existedproduct = productService.findById(id);
         if (existedproduct == null) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesnt exist").build();}
         try {
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
