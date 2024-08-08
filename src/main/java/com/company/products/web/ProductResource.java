@@ -29,7 +29,7 @@ public class ProductResource{
     @GET
     public Response getAllProducts(@QueryParam("page") int page, @QueryParam("size") int size) {
         if (page < 0 || size < 1) {
-             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Page number and size must be greater than 0").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Page number and size must be greater than 0").build();
         }
 
         return Response.ok(productService.getProducts(page,size)).build();
