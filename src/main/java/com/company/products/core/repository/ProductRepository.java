@@ -9,7 +9,7 @@ public interface ProductRepository {
 
 Product create(Product product);
 List<? extends Product> list(int page,int size);
-Product findById(Long id);
-boolean deleteById(Long id);
+Product getById(Long id);
+boolean delete(Long id);
 
 }

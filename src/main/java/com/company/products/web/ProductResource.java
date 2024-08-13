@@ -5,7 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.company.products.core.entity.Product;
-import com.company.products.service.ProductService;
+import com.company.products.core.usecase.ProductUseCase;
+
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
@@ -21,6 +22,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.DefaultValue;
+
 
 
 @Path("/api/products")
@@ -30,23 +33,23 @@ import jakarta.ws.rs.core.Response;
 public class ProductResource{
 
     @Inject
-    ProductService productService;
+    ProductUseCase productuseCase;
     @Inject
     Validator validator;
 
     @GET
-    public Response getAllProducts(@QueryParam("page") int page, @QueryParam("size") int size) {
+    public Response getAllProducts(@QueryParam("page") @DefaultValue("0") int page, @QueryParam("size") @DefaultValue("10") int size) {
         if (page < 0 || size < 1) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Error: Page number and size must be greater than 0").build();
         }
 
-        return Response.ok(productService.getProducts(page,size)).build();
+        return Response.ok(productuseCase.getProducts(page,size)).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getProduct(@PathParam("id") Long id) {
-        Product product =productService.findProductById(id);
+        Product product =productuseCase.findProductById(id);
         if (product == null) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesn't exist").build();}
         return Response.ok(product).build();
     }
@@ -57,7 +60,7 @@ public class ProductResource{
         try{
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
             if(validate.isEmpty()){
-            Product new_product=productService.createProduct(product);
+            Product new_product=productuseCase.createProduct(product);
             return Response.status(Response.Status.CREATED).entity(new_product).build();
 
 
@@ -75,7 +78,7 @@ public class ProductResource{
     @Path("/{id}")
     @Transactional
     public Response updateProduct(@PathParam("id") Long id, Product product) {
-        Product existedproduct = productService.findProductById(id);
+        Product existedproduct = productuseCase.findProductById(id);
         if (existedproduct == null) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesn't exist").build();}
         try {
             Set<ConstraintViolation<Product>> validate = validator.validate(product);
@@ -99,8 +102,8 @@ public class ProductResource{
     @Path("/{id}")
     @Transactional
     public Response deleteProduct(@PathParam("id") Long id) {
-        Product product = productService.findProductById(id);
-        boolean deleted = productService.deleteProductById(id);
+        Product product = productuseCase.findProductById(id);
+        boolean deleted = productuseCase.deleteProductById(id);
         if (!deleted) {return Response.status(Response.Status.NOT_FOUND).entity("Error: Product with id " + id + " doesn't exist").build();}
 
         try {
